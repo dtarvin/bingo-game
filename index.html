@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo Game</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Bingo Card Game</h1>
+    </header>
+    <div class="centerCard">
+        <p class="pdrawBall" id="pdrawBall">
+            How many bingo card/s: <input type="text" id="txtInput" placeholder="Enter number of cards">
+            <button onclick="draw()">DRAW CARD</button>
+            <button id="btnDrawBall" onclick="drawBall()">DRAW BALL</button>
+            <button onclick="clearCards()">CLEAR</button>
+        </p>
+    </div>
+    <div class="centerCard">
+        <p id="pCount">No. of card/s: 0</p>
+    </div><br>
+    <div class="centerCard">
+        <div id="divBingoCard"></div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>
