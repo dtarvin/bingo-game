@@ -5,41 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              fontFamily: {
+                chewy: ['"Chewy"', 'cursive'],
+                lato: ['"Lato"', 'serif'],
+              }
+            }
+          }
+        }
+      </script>
 </head>
 
 <body>
-    <button onclick="bingoCard()">Click to create card</button>
-    <button onclick="drawBingoBall()">Click to draw ball</button>
+    <div class="flex justify-center">
+        <button class="rounded-full m-4 py-2 px-4 border-2 border-[#714BDE] text-[#714BDE] hover:bg-[#714BDE] hover:text-gray-100 focus:outline-none" onclick="bingoCard()">Click to create card</button>
+        <button class="rounded-full m-4 py-2 px-4 border-2 border-[#714BDE] text-[#714BDE] hover:bg-[#714BDE] hover:text-gray-100 focus:outline-none" onclick="drawBingoBall()">Click to draw ball</button>
+    </div>
 
     <script src="./script.js"></script>
 </body>
-
-<!-- <div class="inline-grid grid-cols-5 gap-4 bg-zinc-900">
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">1</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">2</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">3</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">4</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">5</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">6</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">7</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">8</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">9</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">10</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">11</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">12</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">Free</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">13</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">14</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">15</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">16</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">17</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">18</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">19</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">20</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">21</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">22</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">23</div>
-    <div class="w-28 h-28 text-5xl flex justify-center items-center bg-pink-100">24</div>
-</div> -->
 </html>

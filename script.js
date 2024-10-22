@@ -1,10 +1,10 @@
 const bingoCard = () => {
     const cardSheet = document.createElement("main");
-    cardSheet.classList.add('inline-block', 'border-8', 'border-green-500');
+    cardSheet.classList.add('inline-block', 'min-w-fit', 'border-8', 'bg-[#4bb2d3]', 'border-[#4bb2de]');
     document.body.appendChild(cardSheet);
 
     const cardHeader = document.createElement('header');
-    cardHeader.classList.add('flex', 'border-2', 'border-zinc-900');
+    cardHeader.classList.add('flex', 'rounded-xl', 'bg-[#345995ff]');
     cardSheet.appendChild(cardHeader);
 
     const cardLetters = ['B', 'I', 'N', 'G', 'O'];
@@ -12,14 +12,14 @@ const bingoCard = () => {
     for (let i = 0; i < cardLetters.length; i++) {
         const headerCell = document.createElement('div');
         headerCell.textContent = cardLetters[i];
-        headerCell.classList.add('w-28', 'h-28', 'text-5xl', 'flex', 'justify-center', 'items-center', 'bg-cyan-400');
+        headerCell.classList.add('w-28', 'h-28', 'font-chewy', 'text-7xl', 'flex', 'justify-center', 'items-center', 'bg-[#f5f5f4ff]','rounded-full', 'mx-2', 'my-2');
         if (i != cardLetters.length - 1) headerCell.classList.add('mr-2');
         cardHeader.appendChild(headerCell);
     }
 
     const card = document.createElement("div");
     card.setAttribute("id", "card");
-    card.classList.add('inline-grid', 'grid-rows-5', 'grid-flow-col', 'gap-2', 'bg-zinc-900', 'border-2', 'border-zinc-900');
+    card.classList.add('inline-grid', 'grid-rows-5', 'grid-flow-col', 'bg-[#4bb2de]');
     cardSheet.appendChild(card);
 
     let cardNumbers = [];
@@ -29,7 +29,7 @@ const bingoCard = () => {
             const cardCell = document.createElement("div");
             let cardCellNumber = cardNumbers[i][j];
             cardCell.textContent = cardCellNumber;
-            cardCell.classList.add('w-28', 'h-28', 'text-5xl', 'flex', 'justify-center', 'items-center', 'bg-pink-100');
+            cardCell.classList.add('w-28', 'h-28', 'font-lato', 'text-5xl', 'flex', 'justify-center', 'items-center', 'bg-[#f5f5f4ff]', 'rounded-full', 'mx-2', 'my-2');
             card.appendChild(cardCell);
         }
     }
@@ -74,6 +74,8 @@ const drawBingoBall = () => {
     bingoBallsNotDrawn = bingoBallsNotDrawn.filter(ball => ball !== ballDrawn);
     console.log('bingoBallsNotDrawn now has ' + bingoBallsNotDrawn.length + ' balls in it');
     bingoBallsDrawn.push(ballDrawn);
+    console.log('bingoBallsDrawn now has ' + bingoBallsDrawn);
+    console.log('bingoBallsNotDrawn: ' + bingoBallsNotDrawn);
 }
 
 
