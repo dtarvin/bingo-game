@@ -1,7 +1,9 @@
+let cardNumbers = [];
 const bingoCard = () => {
+    const bingoCardSpace = document.getElementById('bingo-card');
     const cardSheet = document.createElement("main");
-    cardSheet.classList.add('inline-block', 'min-w-fit', 'border-8', 'bg-[#4bb2d3]', 'border-[#4bb2de]');
-    document.body.appendChild(cardSheet);
+    cardSheet.classList.add('inline-block', 'mx-auto', 'min-w-fit', 'border-8', 'bg-[#4bb2d3]', 'border-[#4bb2de]');
+    bingoCardSpace.appendChild(cardSheet);
 
     const cardHeader = document.createElement('header');
     cardHeader.classList.add('flex', 'rounded-xl', 'bg-[#345995ff]');
@@ -22,18 +24,28 @@ const bingoCard = () => {
     card.classList.add('inline-grid', 'grid-rows-5', 'grid-flow-col', 'bg-[#4bb2de]');
     cardSheet.appendChild(card);
 
-    let cardNumbers = [];
     cardNumbers = createCardArrays();
+    console.log(`cardNumbers: ${cardNumbers}`);
+    console.log(`cardNumbers[2][2] = ${cardNumbers[2][2]}`);
+    cardNumbers[2][2] = 0;
+    console.log(`cardNumbers now: ${cardNumbers}`);
     for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 5; j++) {
             const cardCell = document.createElement("div");
             let cardCellNumber = cardNumbers[i][j];
-            cardCell.textContent = cardCellNumber;
-            cardCell.classList.add('w-28', 'h-28', 'font-lato', 'text-5xl', 'flex', 'justify-center', 'items-center', 'bg-[#f5f5f4ff]', 'rounded-full', 'mx-2', 'my-2');
+            if (i === 2 && j === 2) {
+                cardCell.textContent = "FREE";
+                cardCell.classList.add('free');
+            } else {
+                cardCell.textContent = cardCellNumber;
+            }
+            cardCell.classList.add('marker', 'w-28', 'h-28', 'font-lato', 'text-5xl', 'flex', 'justify-center', 'items-center', 'bg-[#f5f5f4ff]', 'rounded-full', 'mx-2', 'my-2', cardCellNumber);
             card.appendChild(cardCell);
         }
     }
+    listenForMarkingSpaces();
 }
+
 function createCardArrays() {
     const cardNumbers = new Array(5);
     let max, min;
@@ -65,6 +77,7 @@ const bingoBalls = () => {
 
 let bingoBallsNotDrawn = bingoBalls();
 let bingoBallsDrawn = [];
+let ballsDrawn = [];
 
 const drawBingoBall = () => {
     let ballDrawn = 0;
@@ -72,13 +85,153 @@ const drawBingoBall = () => {
         ballDrawn = Math.floor(Math.random() * 75) + 1;
     }
     bingoBallsNotDrawn = bingoBallsNotDrawn.filter(ball => ball !== ballDrawn);
-    console.log('bingoBallsNotDrawn now has ' + bingoBallsNotDrawn.length + ' balls in it');
+    // console.log('bingoBallsNotDrawn now has ' + bingoBallsNotDrawn.length + ' balls in it');
+    ballsDrawn.push(ballDrawn);
+    // console.log(`drawBingoBall ballsDrawn: ${ballsDrawn}`);
+    if (ballDrawn >= 61) ballDrawn = 'O-' + ballDrawn;
+    else if (ballDrawn >= 46) ballDrawn = 'G-' + ballDrawn;
+    else if (ballDrawn >= 31) ballDrawn = 'N-' + ballDrawn;
+    else if (ballDrawn >= 16) ballDrawn = 'I-' + ballDrawn;
+    else ballDrawn = 'B-' + ballDrawn;
     bingoBallsDrawn.push(ballDrawn);
-    console.log('bingoBallsDrawn now has ' + bingoBallsDrawn);
-    console.log('bingoBallsNotDrawn: ' + bingoBallsNotDrawn);
+    showBallDrawnOnScreen(ballDrawn);
+    addBallToBallsDrawnList(ballDrawn);
+    // console.log('bingoBallsDrawn now has ' + bingoBallsDrawn);
+    // console.log('bingoBallsNotDrawn: ' + bingoBallsNotDrawn);
+}
+
+const showBallDrawnOnScreen = (ballDrawn) => {
+    const currentBall = document.getElementById('currentBall');
+    currentBall.textContent = "";
+    const currentBallNumber = document.createTextNode(ballDrawn);
+    currentBall.appendChild(currentBallNumber);
+}
+
+const addBallToBallsDrawnList = (ballDrawn) => {
+    const ballList = document.getElementById("accordion-content");
+    const listedBall = document.createElement("div");
+    SlistedBall.textContent = ballDrawn;
+    listedBall.classList.add('text-4xl', 'text-center', 'py-2', 'px-4', 'border-r-2', 'border-l-2', 'border-b-2', 'border-[#714BDE]', 'text-[#714BDE]');
+    ballList.appendChild(listedBall);
+}
+
+const listenForMarkingSpaces = () => {
+    const spaces = document.querySelectorAll(".marker");
+    spaces.forEach((space) => {
+        space.addEventListener("click", function (evt) {
+            space.classList.toggle('bg-[#f5f5f4ff]');
+            space.classList.toggle('bg-[#26c485ff]');
+            space.classList.toggle('marked');
+        });
+    });
+} 
+
+const toggleAccordion = () => {
+    document.getElementById('accordion-content').classList.toggle("hidden");
+    document.getElementById('arrow-icon').classList.toggle("rotate-180");
+}
+
+const startNewGame = () => {
+    const ballList = document.getElementById("accordion-content");
+    ballList.innerHTML = '';
+    const currentBall = document.getElementById('currentBall');
+    currentBall.textContent = '';
+    const spaces = document.querySelectorAll(".marker");
+    spaces.forEach((space) => {
+        // space.classList.remove('bg-[#f5f5f4ff]');
+        space.classList.remove('bg-[#26c485ff]');
+        space.classList.remove('marked');
+        space.classList.add('bg-[#f5f5f4ff]');
+    });
+}
+
+const checkIfMarksAreCorrect = () => {
+    const spaces = document.querySelectorAll(".marker");
+    const markedSpaces = Array.from(spaces)
+        .filter((space) => space.classList.contains('marked'))
+        .map((markedSpace) => markedSpace.textContent.trim());
+    console.log('The marked spaces are: ' + markedSpaces);
+    let index = markedSpaces.indexOf('FREE');
+    console.log(index);
+    markedSpaces[index] = "0";
+    index = ballsDrawn.indexOf(0);
+    if (index === -1) ballsDrawn.push(0);
+    console.log(`The marked spaces are now: ${markedSpaces}`);
+    console.log(`checkIfMarksAreCorrect ballsDrawn: ${ballsDrawn}`);
+
+    const markedSpaceNumbers = markedSpaces.map(Number);
+    const legitSpaces = markedSpaceNumbers
+        .filter((markedNumber) => ballsDrawn.includes(markedNumber));
+    console.log('legitSpaces: ' + legitSpaces);
+    if (
+        (checkColForBingo(legitSpaces)) ||
+        (checkRowForBingo(legitSpaces, cardNumbers, 0, 0)) ||
+        (chkDiagTopLeftBottomRight(legitSpaces, cardNumbers, 0)) ||
+        (chkDiagTopRightBottomLeft(legitSpaces, cardNumbers, 4, 0))
+    ) {
+        console.log("BINGO!!!");
+    }
+}
+
+const chkDiagTopLeftBottomRight = (legitSpaces, cardNumbers, i) => {
+    if (i == 5) return true;
+    else {
+        const isValidSpace = legitSpaces.includes(cardNumbers[i][i]);
+        console.log(`isValidSpace: ${isValidSpace}`);
+        if (isValidSpace) return chkDiagTopLeftBottomRight(legitSpaces, cardNumbers, i + 1);
+        else return false;
+    }
+}
+
+const chkDiagTopRightBottomLeft = (legitSpaces, cardNumbers, i, j) => {
+    if (j == 5) return true;
+    else {
+        const isValidSpace = legitSpaces.includes(cardNumbers[i][j]);
+        console.log(`isValidSpace: ${isValidSpace}`);
+        if (isValidSpace) return chkDiagTopRightBottomLeft(legitSpaces, cardNumbers, i - 1, j + 1);
+        else return false;
+    }
+}
+
+const checkColForBingo = (legitSpaces) => {
+    let spacesColumn = [];
+    let max, min;
+    for (let i = 0; i <= 4; i++) {
+        max = 15 * (i + 1);
+        min = max - 14;
+        spacesColumn = legitSpaces.filter((legitSpace) => legitSpace >= min && legitSpace <= max);
+        console.log(`The length of spacesColumn for column ${i + 1} is ${spacesColumn.length}`);
+        if ((i == 2 && spacesColumn.length == 4) || spacesColumn.length == 5 ) {
+            return true;
+        }
+    }
+    return false;
 }
 
 
+const checkRowForBingo = (legitSpaces, cardNumbers, i, j) => {
+    if (i == 5) return true;
+    if (j == 5) return false;
+    const isValidSpace = legitSpaces.includes(cardNumbers[i][j]);
+    if (isValidSpace) return checkRowForBingo(legitSpaces, cardNumbers, i + 1, j);
+    else return checkRowForBingo(legitSpaces, cardNumbers, 0, j + 1);
+}
+
+// do we get the marked ones and see if they're in the list, or take each from the list and see 
+// if one is marked?
+// Do it from marked ones
+
+// 1. take the arrays of numbers and filter the ones with the marked class into a new array
+// 2. take the balls drawn array, remove the letter and dash, and sort into a new array
+// 3. check each number that is marked against each number in the drawn array
+// 4. if a marked number is not in the drawn array, remove the marked class from that element
+
+// function empty() {
+//     element.textContent = "";
+// }
+
+// let parent = document.getElementById("parent");
+// empty(parent);
 
 // 1. create array to draw balls from
 // 2. pick a random number

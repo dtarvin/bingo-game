@@ -4,27 +4,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bingo Game</title>
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Chewy&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        chewy: ['"Chewy"', 'cursive'],
+                        lato: ['"Lato"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 
 <body>
-    <header>
-        <h1>Bingo Card Game</h1>
-    </header>
-    <div class="centerCard">
-        <p class="pdrawBall" id="pdrawBall">
-            How many bingo card/s: <input type="text" id="txtInput" placeholder="Enter number of cards">
-            <button onclick="draw()">DRAW CARD</button>
-            <button id="btnDrawBall" onclick="drawBall()">DRAW BALL</button>
-            <button onclick="clearCards()">CLEAR</button>
-        </p>
-    </div>
-    <div class="centerCard">
-        <p id="pCount">No. of card/s: 0</p>
-    </div><br>
-    <div class="centerCard">
-        <div id="divBingoCard"></div>
+    <div class="flex">
+        <div class="w-3/4 h-100lvh flex flex-col border-r border-black-500" id="bingo-card">
+            <div class="flex justify-center">
+                <button
+                    class="rounded-full text-4xl m-4 py-2 px-4 border-2 border-[#714BDE] text-[#714BDE] hover:bg-[#714BDE] hover:text-gray-100 focus:outline-none"
+                    onclick="startNewGame()">New game</button>
+                <button
+                    class="rounded-full text-4xl m-4 py-2 px-4 border-2 border-[#714BDE] text-[#714BDE] hover:bg-[#714BDE] hover:text-gray-100 focus:outline-none"
+                    onclick="bingoCard()">Click to create card</button>
+                <button
+                    class="rounded-full text-4xl m-4 py-2 px-4 border-2 border-[#714BDE] text-[#714BDE] hover:bg-[#714BDE] hover:text-gray-100 focus:outline-none"
+                    onclick="drawBingoBall()">Click to draw ball</button>
+                <button
+                    class="rounded-full text-4xl m-4 py-2 px-4 border-2 border-[#714BDE] text-[#714BDE] hover:bg-[#714BDE] hover:text-gray-100 focus:outline-none"
+                    onclick="checkIfMarksAreCorrect()">Click to check card</button>
+            </div>
+        </div>
+        <div class="w-1/5">
+            <div class="flex mt-4 text-[#714BDE] font-bold justify-center text-4xl">
+                Current ball: <span id="currentBall" class="ml-4 text-[#A14BDE]"></span>
+            </div>
+            <div class="overflow-hidden" onclick="toggleAccordion()">
+                <div class="flex text-4xl justify-center mx-4 mt-4 py-2 px-4 border-2 border-[#714BDE] text-[#714BDE]">
+                    Balls drawn
+                    <span class="transform transition-transform" id="arrow-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-12">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="px-4 hidden max-h-[80vh] overflow-auto" id="accordion-content">
+
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="./script.js"></script>
