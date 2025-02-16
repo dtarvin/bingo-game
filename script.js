@@ -47,15 +47,21 @@ const bingoCard = () => {
 }
 
 function createCardArrays() {
-    const cardNumbers = new Array(5);
-    let max, min;
-    for (let i = 0; i < 5; i++) {
-        cardNumbers[i] = [];
-        max = 15 * (i + 1);
-        min = max - 14;
-        cardNumbers[i] = generateRandomNumbers(5, min, max);
-    }
-    return cardNumbers;
+    /*----- Code flagged by ChatGPT -----*/
+    // const cardNumbers = new Array(5);
+    // let max, min;
+    // for (let i = 0; i < 5; i++) {
+    //     cardNumbers[i] = [];
+    //     max = 15 * (i + 1);
+    //     min = max - 14;
+    //     cardNumbers[i] = generateRandomNumbers(5, min, max);
+    // }
+    // return cardNumbers;
+    /*----- End of code flagged by ChatGPT -----*/
+
+    /*----- Replacement code suggested by ChatGPT -----*/
+    return Array.from({ length: 5 }, (_, i) => generateRandomNumbers(5, i * 15 + 1, (i + 1) * 15));
+    /*----- End of replacement code suggested by ChatGPT -----*/
 }
 
 function generateRandomNumbers(count, min, max) {
@@ -80,25 +86,61 @@ let bingoBallsDrawn = [];
 let ballsDrawn = [];
 
 const drawBingoBall = () => {
-    let ballDrawn = 0;
-    while (bingoBallsNotDrawn.indexOf(ballDrawn) === -1) {
-        ballDrawn = Math.floor(Math.random() * 75) + 1;
-    }
-    bingoBallsNotDrawn = bingoBallsNotDrawn.filter(ball => ball !== ballDrawn);
-    // console.log('bingoBallsNotDrawn now has ' + bingoBallsNotDrawn.length + ' balls in it');
-    ballsDrawn.push(ballDrawn);
+    /*----- Code flagged by ChatGPT -----*/
+    // let ballDrawn = 0;
+    // while (bingoBallsNotDrawn.indexOf(ballDrawn) === -1) {
+    //     ballDrawn = Math.floor(Math.random() * 75) + 1;
+    // }
+    // bingoBallsNotDrawn = bingoBallsNotDrawn.filter(ball => ball !== ballDrawn);
+    // ballsDrawn.push(ballDrawn);
     // console.log(`drawBingoBall ballsDrawn: ${ballsDrawn}`);
-    if (ballDrawn >= 61) ballDrawn = 'O-' + ballDrawn;
-    else if (ballDrawn >= 46) ballDrawn = 'G-' + ballDrawn;
-    else if (ballDrawn >= 31) ballDrawn = 'N-' + ballDrawn;
-    else if (ballDrawn >= 16) ballDrawn = 'I-' + ballDrawn;
-    else ballDrawn = 'B-' + ballDrawn;
-    bingoBallsDrawn.push(ballDrawn);
-    showBallDrawnOnScreen(ballDrawn);
-    addBallToBallsDrawnList(ballDrawn);
-    // console.log('bingoBallsDrawn now has ' + bingoBallsDrawn);
-    // console.log('bingoBallsNotDrawn: ' + bingoBallsNotDrawn);
-}
+    // if (ballDrawn >= 61) ballDrawn = 'O-' + ballDrawn;
+    // else if (ballDrawn >= 46) ballDrawn = 'G-' + ballDrawn;
+    // else if (ballDrawn >= 31) ballDrawn = 'N-' + ballDrawn;
+    // else if (ballDrawn >= 16) ballDrawn = 'I-' + ballDrawn;
+    // else ballDrawn = 'B-' + ballDrawn;
+    // bingoBallsDrawn.push(ballDrawn);
+    // showBallDrawnOnScreen(ballDrawn);
+    // addBallToBallsDrawnList(ballDrawn);
+    /*----- End of code flagged by ChatGPT -----*/
+
+    /*----- Replacement code suggested by ChatGPT -----*/
+    if (bingoBallsNotDrawn.length === 0) {
+        alert("All bingo balls have been drawn!");
+        return;
+    }
+
+    // Draw a random ball and remove it from the available list
+    const ballDrawn = bingoBallsNotDrawn.splice(Math.floor(Math.random() * bingoBallsNotDrawn.length, 1)[0]);
+
+    // Prevent 'ballsDrawn' array from growing indefinitely
+    if (ballDrawn.length > 75) {
+        ballsDrawn.shift(); // Remove the oldest ball if the array gets too large
+    }
+    ballsDrawn.push(ballDrawn);
+
+    // Determine ball letter (B, I, N, G, O)
+    let ballDisplay;
+    if (ballDrawn >= 61) ballDisplay = 'O-' + ballDrawn;
+    else if (ballDrawn >= 46) ballDisplay = 'G-' + ballDrawn;
+    else if (ballDrawn >= 31) ballDisplay = 'N-' + ballDrawn;
+    else if (ballDrawn >= 16) ballDisplay = 'I-' + ballDrawn;
+    else ballDisplay = 'B-' + ballDrawn;
+
+    // Use Set to prevent duplicates
+    bingoBallsDrawn = [...new Set([...bingoBallsDrawn, ballDisplay])];
+
+    // Update UI efficiently
+    requestAnimationFrame(() => {
+        showBallDrawnOnScreen(ballDisplay);
+        addBallToBallsDrawnList(ballDisplay);
+    });
+    /*----- End of replacement code recommended by ChatGPT -----*/
+
+    console.log('bingoBallsNotDrawn now has ' + bingoBallsNotDrawn.length + ' balls in it');
+    console.log('bingoBallsDrawn now has ' + bingoBallsDrawn);
+    console.log('bingoBallsNotDrawn: ' + bingoBallsNotDrawn);
+};
 
 const showBallDrawnOnScreen = (ballDrawn) => {
     const currentBall = document.getElementById('currentBall');
@@ -110,40 +152,82 @@ const showBallDrawnOnScreen = (ballDrawn) => {
 const addBallToBallsDrawnList = (ballDrawn) => {
     const ballList = document.getElementById("accordion-content");
     const listedBall = document.createElement("div");
-    SlistedBall.textContent = ballDrawn;
+    listedBall.textContent = ballDrawn;
     listedBall.classList.add('text-4xl', 'text-center', 'py-2', 'px-4', 'border-r-2', 'border-l-2', 'border-b-2', 'border-[#714BDE]', 'text-[#714BDE]');
     ballList.appendChild(listedBall);
 }
 
 const listenForMarkingSpaces = () => {
-    const spaces = document.querySelectorAll(".marker");
-    spaces.forEach((space) => {
-        space.addEventListener("click", function (evt) {
-            space.classList.toggle('bg-[#f5f5f4ff]');
-            space.classList.toggle('bg-[#26c485ff]');
-            space.classList.toggle('marked');
-        });
-    });
+    /*----- Code flagged by ChatGPT -----*/
+    // const spaces = document.querySelectorAll(".marker");
+    // spaces.forEach((space) => {
+    //     space.addEventListener("click", function (evt) {
+    //         space.classList.toggle('bg-[#f5f5f4ff]');
+    //         space.classList.toggle('bg-[#26c485ff]');
+    //         space.classList.toggle('marked');
+    //     });
+    // });
+    /*----- End of code flagged by ChatGPT -----*/
+
+    /*----- Replacement code recommended by ChatGPT -----*/
+    document.getElementById("card").addEventListener("click", (evt) => {
+        if (evt.target.classList.contains("marker")) {
+            evt.target.classList.toggle('bg-[#f5f5f4ff]');
+            evt.target.classList.toggle('bg-[#26c485ff]');
+            evt.target.classList.toggle('marked');
+        }
+    })
+    /*----- End of replacement code recommended by ChatGPT -----*/
 } 
 
+/*----- Additional code recommended by ChatGPT -----*/
+const accordionContent = document.getElementById('accordion-content');
+const arrowIcon = document.getElementById('arrow-icon');
+/*----- End of additional code recommended by ChatGPT -----*/
+
 const toggleAccordion = () => {
-    document.getElementById('accordion-content').classList.toggle("hidden");
-    document.getElementById('arrow-icon').classList.toggle("rotate-180");
+    /*----- Code flagged by ChatGPT -----*/
+    // document.getElementById('accordion-content').classList.toggle("hidden");
+    // document.getElementById('arrow-icon').classList.toggle("rotate-180");
+    /*----- End of code flagged by ChatGPT -----*/
+
+    /*----- Replacement code recommended by ChatGPT -----*/
+    accordionContent.classList.toggle("hidden");
+    arrowIcon.classList.toggle("rotate-180");
+    /*----- End of replacement code recommended by ChatGPT -----*/
 }
 
 const startNewGame = () => {
-    const ballList = document.getElementById("accordion-content");
-    ballList.innerHTML = '';
-    const currentBall = document.getElementById('currentBall');
-    currentBall.textContent = '';
-    const spaces = document.querySelectorAll(".marker");
-    spaces.forEach((space) => {
-        // space.classList.remove('bg-[#f5f5f4ff]');
-        space.classList.remove('bg-[#26c485ff]');
-        space.classList.remove('marked');
+    /*----- Code flagged by ChatGPT -----*/
+    // const ballList = document.getElementById("accordion-content");
+    // ballList.innerHTML = '';
+    // const currentBall = document.getElementById('currentBall');
+    // currentBall.textContent = '';
+    // const spaces = document.querySelectorAll(".marker");
+    // spaces.forEach((space) => {
+    //     // space.classList.remove('bg-[#f5f5f4ff]');
+    //     space.classList.remove('bg-[#26c485ff]');
+    //     space.classList.remove('marked');
+    //     space.classList.add('bg-[#f5f5f4ff]');
+    // });
+    /*----- End of code flagged by ChatGPT -----*/
+
+    /*----- Replacement code recommended by ChatGPT -----*/
+    bingoBallsNotDrawn = bingoBalls();
+    bingoBallsDrawn = [];
+    ballsDrawn = [];
+
+    // Clear UI elements
+    document.getElementById("accordion-content").innerHTML = '';
+    document.getElementById("currentBall").textContent = '';
+
+    // Reset card spaces
+    document.querySelectorAll(".marker").forEach((space) => {
+        space.classList.remove('bg-[#26c485ff]', 'marked');
         space.classList.add('bg-[#f5f5f4ff]');
     });
-}
+    /*----- End of replacement code recommended by ChatGPT -----*/
+};
 
 const checkIfMarksAreCorrect = () => {
     const spaces = document.querySelectorAll(".marker");
