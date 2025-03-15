@@ -111,7 +111,7 @@ const drawBingoBall = () => {
     }
 
     // Draw a random ball and remove it from the available list
-    const ballDrawn = bingoBallsNotDrawn.splice(Math.floor(Math.random() * bingoBallsNotDrawn.length, 1)[0]);
+    const ballDrawn = bingoBallsNotDrawn.splice(Math.floor(Math.random() * bingoBallsNotDrawn.length), 1)[0];
 
     // Prevent 'ballsDrawn' array from growing indefinitely
     if (ballDrawn.length > 75) {
@@ -260,6 +260,7 @@ const checkIfMarksAreCorrect = () => {
 const chkDiagTopLeftBottomRight = (legitSpaces, cardNumbers, i) => {
     if (i == 5) return true;
     else {
+        console.log(`current card number is ${cardNumbers[i][i]}`);
         const isValidSpace = legitSpaces.includes(cardNumbers[i][i]);
         console.log(`isValidSpace: ${isValidSpace}`);
         if (isValidSpace) return chkDiagTopLeftBottomRight(legitSpaces, cardNumbers, i + 1);
@@ -270,6 +271,7 @@ const chkDiagTopLeftBottomRight = (legitSpaces, cardNumbers, i) => {
 const chkDiagTopRightBottomLeft = (legitSpaces, cardNumbers, i, j) => {
     if (j == 5) return true;
     else {
+        console.log(`current card number is ${cardNumbers[i][j]}`);
         const isValidSpace = legitSpaces.includes(cardNumbers[i][j]);
         console.log(`isValidSpace: ${isValidSpace}`);
         if (isValidSpace) return chkDiagTopRightBottomLeft(legitSpaces, cardNumbers, i - 1, j + 1);
@@ -296,6 +298,7 @@ const checkColForBingo = (legitSpaces) => {
 const checkRowForBingo = (legitSpaces, cardNumbers, i, j) => {
     if (i == 5) return true;
     if (j == 5) return false;
+    console.log(`current card number is ${cardNumbers[i][j]}`);
     const isValidSpace = legitSpaces.includes(cardNumbers[i][j]);
     if (isValidSpace) return checkRowForBingo(legitSpaces, cardNumbers, i + 1, j);
     else return checkRowForBingo(legitSpaces, cardNumbers, 0, j + 1);
@@ -349,4 +352,4 @@ const checkRowForBingo = (legitSpaces, cardNumbers, i, j) => {
     // need to run Math.random 5 times with 30 as max and 16 as min
     // third loop - to fill third sub-array - N
     // need to run Math.random 4 times with 45 as max and 31 as min
-    // could run 5 times, but if main array index is 2 and sub-array index is 2, add "free" to array instead
+// could run 5 times, but if main array index is 2 and sub-array index is 2, add "free" to array instead
